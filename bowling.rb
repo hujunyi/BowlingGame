@@ -86,6 +86,7 @@ class Bowling
       score += s
       nextTwo.push(s)
     end
+    # calculate the score reversely
     @frames[0..(@frames.size-2)].reverse.each do |f|
       # Get the bonus if the frame has
       if f.reward == "strike"
