@@ -6,12 +6,12 @@ class Frame
     @records = []
   end
   def play
-    ball = gets.to_i
+    ball = knock_down
     @records << ball
     if ball == 10
       @reward = "strike"
     else
-      second_ball = gets.to_i
+      second_ball = knock_down
       @records << second_ball
       ball += second_ball
       @reward = "spare" if ball == 10
@@ -19,19 +19,25 @@ class Frame
   end
   def last_play
     puts "This is the last frame"
-    ball = gets.to_i
-    second_ball = gets.to_i
+    ball = knock_down
+    second_ball = knock_down
     @records << ball
     @records << second_ball
     if ball == 10||ball+second_ball == 10
-      third_ball = gets.to_i
+      third_ball = knock_down
       @records.push(third_ball)
       @reward = "spare" 
       @reward = "strike"
     end
   end
+  private
+  def knock_down
+    num = Integer(gets)
+    raise ArgumentError: "Input out of range" if num>10||num<0
+    num
+  end
 end
-# A array hold the next two balls for the current ball
+# An array holds the next two balls for the current ball
 class NextTwo
   attr_reader :record
   def initialize
@@ -64,7 +70,7 @@ class Bowling
   end
   # Play the 10 frames, let user input the scores for each frame
   def play_game
-    puts "Type in the number of pins knocked down with each ball"
+    puts "Type in the number of pins knocked down with each ball(0-10)"
     length = @frames.size
     @frames[0..(length-2)].each_with_index do |f,index|
       puts "Frame No.#{index+1}"
@@ -83,7 +89,6 @@ class Bowling
     @frames[0..(@frames.size-2)].reverse.each do |f|
       # Get the bonus if the frame has
       if f.reward == "strike"
-        puts "strike: #{nextTwo.bonus_for_strike}"
         score += nextTwo.bonus_for_strike
       elsif f.reward == "spare"
         score += nextTwo.bonus_for_spare
@@ -106,7 +111,7 @@ class Bowling
     puts "Turkey is bowled at the index of #{turkey}" if !turkey.empty?
   end
 end
-bowl = Bowling.new(5)  
+bowl = Bowling.new(10)  
 bowl.play_game
 bowl.get_score
 bowl.turkey
