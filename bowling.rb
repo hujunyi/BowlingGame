@@ -33,7 +33,10 @@ class Frame
   private
   def knock_down
     num = Integer(gets)
-    raise ArgumentError: "Input out of range" if num>10||num<0
+    while num>10||num<0
+      puts "Invalid input. Please type in a number between 0 and 10"
+      num = Integer(gets)
+    end
     num
   end
 end
@@ -104,12 +107,15 @@ class Bowling
   end
   def turkey
     turkey = []
-    (@frames.length-1).times do |index|
-      if @frames[index].reward == "strike" && @frames[index+1].reward == "strike"
+    index = 0
+    while index<@frames.length-2
+      if @frames[index].reward== "strike" && @frames[index+1].reward && @frames[index+2].reward
         turkey << index+1
+        index += 2
       end
+      index +=1
     end
-    puts "Turkey is bowled at the index of #{turkey}" if !turkey.empty?
+    puts "Turkey is bowled at the index of #{turkey}\n(In requirements file sent to me: When 2 strikes are bowled in a row, that is called a 'Turkey'. Now I assume it to be 3 according to your description.)" if !turkey.empty?
   end
 end
 bowl = Bowling.new(10)  
