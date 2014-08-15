@@ -6,12 +6,12 @@ class Frame
     @records = []
   end
   def play
-    ball = knock_down
+    ball = knock_down(10)
     @records << ball
     if ball == 10
       @reward = "strike"
     else
-      second_ball = knock_down
+      second_ball = knock_down(10-ball)
       @records << second_ball
       ball += second_ball
       @reward = "spare" if ball == 10
@@ -20,21 +20,34 @@ class Frame
   def last_play
     puts "This is the last frame"
     ball = knock_down
-    second_ball = knock_down
     @records << ball
-    @records << second_ball
-    if ball == 10||ball+second_ball == 10
-      third_ball = knock_down
-      @records.push(third_ball)
-      @reward = "spare" 
+    if ball == 10
+      # If this is a strike, then there are two additional balls
       @reward = "strike"
+      second_ball = knock_down
+      floor = 10
+      # If the second ball doesn't get 10, then the third ball has the floor
+      floor -= second_ball if second_ball != 10
+      @records << second_ball
+      third_ball = knock_down(floor)
+      @records << third_ball
+    else 
+      # If this is not a strike, then the second ball has the floor 10-ball
+      second_ball = knock_down(10-ball)
+      @records << second_ball
+      if ball + second_ball == 10
+        # If this is a spare, then there is one additional ball
+        third_ball = knock_down
+        @records.push(third_ball)
+        @reward = "spare" 
+      end
     end
   end
   private
-  def knock_down
+  def knock_down(floor=10)
     num = Integer(gets)
-    while num>10||num<0
-      puts "Invalid input. Please type in a number between 0 and 10"
+    while num>floor||num<0
+      puts "Invalid input. Please type in a number between 0 and #{floor}"
       num = Integer(gets)
     end
     num
@@ -109,7 +122,7 @@ class Bowling
     turkey = []
     index = 0
     while index<@frames.length-2
-      if @frames[index].reward== "strike" && @frames[index+1].reward && @frames[index+2].reward
+      if @frames[index].reward== "strike" && @frames[index+1].reward == "strike" && @frames[index+2].reward == "strike"
         turkey << index+1
         index += 2
       end
