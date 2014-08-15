@@ -64,6 +64,7 @@ class Bowling
   end
   # Play the 10 frames, let user input the scores for each frame
   def play_game
+    puts "Type in the number of pins knocked down with each ball"
     length = @frames.size
     @frames[0..(length-2)].each_with_index do |f,index|
       puts "Frame No.#{index+1}"
@@ -92,13 +93,13 @@ class Bowling
         nextTwo.push(s)
       end
     end
-    puts score
+    puts "Your total score is: #{score}"
   end
   def turkey
     turkey = []
-    (@frames.length-2).times do |index|
+    (@frames.length-1).times do |index|
       if @frames[index].reward == "strike" && @frames[index+1].reward == "strike"
-        turkey << index
+        turkey << index+1
       end
     end
     puts "Turkey is bowled at the index of #{turkey}" if !turkey.empty?
