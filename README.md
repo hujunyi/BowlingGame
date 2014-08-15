@@ -1,5 +1,6 @@
 BowlingGame
 ===========
+This program keep score of a bowling game. User input the number of pins knocked down with each ball. Here are rules:
 * There are 10 pins total, each counts as 1 point. 
 * Each frame has up to 2 balls that can be thrown. 
 * If a strike is bowled (all pins knocked down on first throw), the second ball is not thrown. 
