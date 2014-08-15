@@ -80,15 +80,16 @@ class Bowling
       score += s
       nextTwo.push(s)
     end
-    @frames[0..(@frames.size-2)].each do |f|
+    @frames[0..(@frames.size-2)].reverse.each do |f|
       # Get the bonus if the frame has
       if f.reward == "strike"
+        puts "strike: #{nextTwo.bonus_for_strike}"
         score += nextTwo.bonus_for_strike
       elsif f.reward == "spare"
         score += nextTwo.bonus_for_spare
       end
       # Push the records in the frame into the nextTwo for further reference
-      f.records.each do |s|
+      f.records.reverse.each do |s|
         score += s
         nextTwo.push(s)
       end
@@ -104,9 +105,8 @@ class Bowling
     end
     puts "Turkey is bowled at the index of #{turkey}" if !turkey.empty?
   end
-
 end
-bowl = Bowling.new(10)  
+bowl = Bowling.new(5)  
 bowl.play_game
 bowl.get_score
 bowl.turkey
